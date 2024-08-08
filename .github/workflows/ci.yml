@@ -11,7 +11,8 @@ on:
       - develop
 
 jobs:
-  build:
+  ci:
+    name: cargo setup toolchain
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -21,28 +22,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Install Rust toolchain
-      uses: actions-rs/toolchain@v1
+    - name: Setup Rust toolchain
+      uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
+        components: clippy, rustfmt
         toolchain: ${{ matrix.rust }}
-        override: true
-
-    - name: Cache cargo registry
-      uses: actions/cache@v3
-      with:
-        path: ~/.cargo/registry
-        key: ${{ runner.os }}-cargo-registry-${{ matrix.rust }}
-        restore-keys: |
-          ${{ runner.os }}-cargo-registry-
-
-    - name: Cache cargo index
-      uses: actions/cache@v3
-      with:
-        path: ~/.cargo/git
-        key: ${{ runner.os }}-cargo-git-${{ matrix.rust }}
-        restore-keys: |
-          ${{ runner.os }}-cargo-git-
 
     - name: Build project
       run: cargo build --verbose
@@ -55,6 +39,3 @@ jobs:
 
     - name: Run Clippy
       run: cargo clippy -- -D warnings
-
-    # - name: Build documentation (optional)
-    #   run: cargo doc --no-deps --document-private-items
