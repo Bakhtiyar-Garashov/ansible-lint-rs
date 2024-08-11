@@ -4,7 +4,8 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-cli = {path = "crates/cli"}
+clap = "4.5.15"
 
-[workspace]
-members = ["crates/cli"]
+[[bin]]
+name = "ansible-lint"  # Specify the new binary name here
+path = "src/main.rs"
