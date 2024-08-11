@@ -1,13 +1,19 @@
-use cli::say_hi;
+use clap::{arg, Command};
 
 fn main() {
-    say_hi()
-}
+    let matches = Command::new("ansible lint")
+        .version("1.0")
+        .about("Ansible Lint is a command-line tool for linting playbooks, roles and collections")
+        .arg(arg!(--two <VALUE>).required(true))
+        .arg(arg!(--one <VALUE>).required(true))
+        .get_matches();
 
-mod tests {
-    #[test]
-    fn it_works() {
-        let result = cli::add(2, 2);
-        assert_eq!(result, 4);
-    }
+    println!(
+        "two: {:?}",
+        matches.get_one::<String>("two").expect("required")
+    );
+    println!(
+        "one: {:?}",
+        matches.get_one::<String>("one").expect("required")
+    );
 }
