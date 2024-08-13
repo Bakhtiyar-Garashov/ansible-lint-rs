@@ -1,5 +1,4 @@
 use clap::{arg, Command};
-use serde_yaml;
 
 fn main() {
     let matches = Command::new("ansible lint")
